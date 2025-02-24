@@ -2,9 +2,6 @@ package ch.fhnw.algd1.converters.binary;
 
 public class BinConverter {
 	public static String toString(int x) {
-		if(x > 127 || x < -128){
-			throw new IllegalArgumentException("x must be between 127 and -128");
-		}
 		StringBuilder output = new StringBuilder();
 		byte power = 0;
 		int counter = 0;
@@ -38,16 +35,9 @@ public class BinConverter {
 
 	public static int fromString(String text) {
 		byte output = 0;
-		text = text.replace(" ", "");
-		if (text.length() > 8 || text.isEmpty()){
-			throw new IllegalArgumentException("text must contain 8 non space characters");
-		}
 		for (int i = 0; i < text.length(); i++) {
-			byte temp = (byte) (text.charAt(i)-48);
 			output = (byte) (output << 1);
-			if(temp == 1){
-				output ^= 1;
-			}
+			output ^= (byte) (text.charAt(i)-'0');
 		}
 
 		return output;
