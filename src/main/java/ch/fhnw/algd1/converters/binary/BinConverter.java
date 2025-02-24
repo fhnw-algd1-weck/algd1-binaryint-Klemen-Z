@@ -6,14 +6,13 @@ public class BinConverter {
 			throw new IllegalArgumentException("x must be between 127 and -128");
 		}
 		StringBuilder output = new StringBuilder();
-		int power = 0;
+		byte power = 0;
 		int counter = 0;
 
-		int temp = x;
+		byte temp = (byte) x;
 
 		if (x < 0){
-			temp ^= -1;
-			temp++;
+			temp = (byte) ~temp;
 		}
 
 		while (power < temp) {
@@ -26,26 +25,26 @@ public class BinConverter {
 			output.append((temp >> i) & 1);
 		}
 
-		if (output.length() <= 8 && x >= 0){
+		if (output.length() <= 8){
 			output.append("0".repeat(8-output.length()));
-		} else if (output.length() <= 8){
-			output.append("1".repeat(8-output.length()));
 		}
-
 		output.reverse();
 
+		if (x < 0){
+            return output.toString().replace("0", ".").replace("1", "0").replace(".", "1");
+		}
 		return output.toString();
 	}
 
 	public static int fromString(String text) {
-		int output = 0;
+		byte output = 0;
 		text = text.replace(" ", "");
 		if (text.length() > 8 || text.isEmpty()){
 			throw new IllegalArgumentException("text must contain 8 non space characters");
 		}
 		for (int i = 0; i < text.length(); i++) {
-			int temp = text.charAt(i)-48;
-			output = output << 1;
+			byte temp = (byte) (text.charAt(i)-48);
+			output = (byte) (output << 1);
 			if(temp == 1){
 				output ^= 1;
 			}
